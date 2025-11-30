@@ -22,6 +22,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+console.log("✅ DATABASE_URL loaded:", !!process.env.DATABASE_URL);
+
 // Simple healthcheck
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
