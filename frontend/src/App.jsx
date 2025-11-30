@@ -15,7 +15,7 @@ import EmailVerified from "./pages/EmailVerified";
 import ApiDocs from "./pages/ApiDocs";
 
 
-
+console.log("API BASE:", import.meta.env.VITE_API_BASE_URL);
 
 function PrivateRoute({ children }) {
   const { token } = useAuth();
