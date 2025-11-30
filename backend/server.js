@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
 
+console.log("✅ DATABASE_URL loaded:", !!process.env.DATABASE_URL);
+
 const authRoutes = require('./routes/auth.routes');
 const tenantRoutes = require('./routes/tenant.routes');
 const patientRoutes = require('./routes/patient.routes');
