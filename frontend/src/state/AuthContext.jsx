@@ -3,27 +3,52 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // ✅ Restore token immediately from localStorage
+
+  // ✅ SAFE restore token
   const [token, setToken] = useState(() => {
-    return localStorage.getItem('token');
+    try {
+      return localStorage.getItem('token');
+    } catch {
+      return null;
+    }
   });
 
-  // ✅ Restore user immediately from localStorage
+  // ✅ SAFE restore user (NO CRASH EVER)
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
+    try {
+      const storedUser = localStorage.getItem('user');
+
+      if (!storedUser || storedUser === "undefined") return null;
+
+      return JSON.parse(storedUser);
+    } catch (err) {
+      console.error("Invalid user in storage, clearing:", err);
+      localStorage.removeItem('user');
+      return null;
+    }
   });
 
-  // ✅ Safety re-hydration on mount (prevents edge race cases)
+  // ✅ Safe re-hydration on mount
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
+    try {
+      const savedToken = localStorage.getItem('token');
+      const savedUser = localStorage.getItem('user');
 
-    if (savedToken && !token) setToken(savedToken);
-    if (savedUser && !user) setUser(JSON.parse(savedUser));
+      if (savedToken && !token) setToken(savedToken);
+
+      if (savedUser && savedUser !== "undefined" && !user) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch (err) {
+      console.error("Auth rehydrate failed:", err);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+    }
   }, []); // run once only
 
-  // ✅ LOGIN: persist both token + user
+  // ✅ LOGIN
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
@@ -31,7 +56,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  // ✅ LOGOUT: clear everything
+  // ✅ LOGOUT
   const logout = () => {
     setToken(null);
     setUser(null);
