@@ -102,6 +102,7 @@ router.post('/register-hospital', async (req, res) => {
     // ✅ 6. Send verification email
     const verifyLink = `${process.env.FRONTEND_BASE_URL}/verify-email/${verifyToken}`;
 
+    try {
     await sendEmail({
       to: adminEmail,
       subject: "Verify your Hospital CRM account",
@@ -116,6 +117,10 @@ router.post('/register-hospital', async (req, res) => {
         </div>
       `,
     });
+    console.log("✅ Verification email sent");
+} catch (emailErr) {
+  console.error("⚠️ Email send failed, but registration will continue:", emailErr.message);
+}
 
     await client.query('COMMIT');
 
