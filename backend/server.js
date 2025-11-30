@@ -1,0 +1,44 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const passport = require('passport');
+
+const authRoutes = require('./routes/auth.routes');
+const tenantRoutes = require('./routes/tenant.routes');
+const patientRoutes = require('./routes/patient.routes');
+const userRoutes = require('./routes/users.routes');
+const prescriptionRoutes = require('./routes/prescription.routes');
+const dashboardRoutes = require('./routes/dashboard.routes'); 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+
+
+require('./middleware/authMiddleware'); // initializes passport strategy
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(passport.initialize());
+app.use('/api/users', userRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
+
+// Simple healthcheck
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/tenants', tenantRoutes);
+app.use('/api/patients', patientRoutes);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

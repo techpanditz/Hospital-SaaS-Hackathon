@@ -1,0 +1,245 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Hospital SaaS API",
+    "description": "Public Swagger documentation for Hospital SaaS Backend",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Local Development"
+    },
+    {
+      "url": "https://YOUR_PRODUCTION_DOMAIN",
+      "description": "Production (Replace manually)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+
+    "/api/tenants/register-hospital": {
+      "post": {
+        "summary": "Register Hospital + Admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "address": { "type": "string" },
+                  "contactEmail": { "type": "string" },
+                  "contactPhone": { "type": "string" },
+                  "licenseNumber": { "type": "string" },
+                  "adminName": { "type": "string" },
+                  "adminEmail": { "type": "string" },
+                  "adminPhone": { "type": "string" },
+                  "adminPassword": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Hospital registered" } }
+      }
+    },
+
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Login successful" } }
+      }
+    },
+
+    "/api/auth/logout": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Logout",
+        "responses": { "200": { "description": "Logged out" } }
+      }
+    },
+
+    "/api/auth/forgot-password": {
+      "post": {
+        "summary": "Forgot Password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Reset email sent" } }
+      }
+    },
+
+    "/api/auth/reset-password": {
+      "post": {
+        "summary": "Reset Password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": { "type": "string" },
+                  "newPassword": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Password reset" } }
+      }
+    },
+
+    "/api/users": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "List Users",
+        "responses": { "200": { "description": "User list" } }
+      }
+    },
+
+    "/api/users/create-doctor": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create Doctor",
+        "responses": { "200": { "description": "Doctor created" } }
+      }
+    },
+
+    "/api/users/create-nurse": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create Nurse",
+        "responses": { "200": { "description": "Nurse created" } }
+      }
+    },
+
+    "/api/patients": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Search / List Patients",
+        "parameters": [
+          { "name": "search", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "number" } },
+          { "name": "pageSize", "in": "query", "schema": { "type": "number" } }
+        ],
+        "responses": { "200": { "description": "Patients list" } }
+      },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Create Patient",
+        "responses": { "200": { "description": "Patient created" } }
+      }
+    },
+
+    "/api/patients/{id}": {
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update Patient",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Patient updated" } }
+      }
+    },
+
+    "/api/patients/export": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Export Patients CSV",
+        "responses": { "200": { "description": "CSV file" } }
+      }
+    },
+
+    "/api/patients/fetch-by-aadhaar": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Fetch Patient by Aadhaar",
+        "responses": { "200": { "description": "Matched patients" } }
+      }
+    },
+
+    "/api/patients/request-import-otp": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Request Import OTP",
+        "responses": { "200": { "description": "OTP Sent" } }
+      }
+    },
+
+    "/api/patients/verify-otp": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Verify OTP and Import Patient",
+        "responses": { "200": { "description": "Patient imported" } }
+      }
+    },
+
+    "/api/prescriptions": {
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Add Prescription",
+        "responses": { "200": { "description": "Prescription added" } }
+      }
+    },
+
+    "/api/prescriptions/{id}": {
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Update Prescription",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Prescription updated" } }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Delete Prescription",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Prescription deleted" } }
+      }
+    },
+
+    "/api/dashboard/summary": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "summary": "Dashboard Summary",
+        "responses": { "200": { "description": "Dashboard metrics" } }
+      }
+    }
+  }
+}
