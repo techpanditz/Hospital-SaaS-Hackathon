@@ -39,7 +39,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const PORT = process.env.PORT || 4000;
 
-const cors = require("cors");
+
 app.use(cors({
   origin: "https://hospital-saas-hackathon-frontend.onrender.com/",
   credentials: true
