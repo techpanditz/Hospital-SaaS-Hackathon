@@ -27,7 +27,7 @@ app.use(
   })
 );
 
-app.options("*", cors());
+app.options("/*", cors());
 
 // ✅ BODY + PASSPORT
 app.use(express.json());
