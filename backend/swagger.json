@@ -11,7 +11,7 @@
       "description": "Local Development"
     },
     {
-      "url": "https://YOUR_PRODUCTION_DOMAIN",
+      "url": "https://hospital-saas-hackathon-frontend.onrender.com/",
       "description": "Production (Replace manually)"
     }
   ],
