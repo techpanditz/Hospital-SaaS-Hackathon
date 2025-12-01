@@ -48,10 +48,16 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const PORT = process.env.PORT || 4000;
 
 
+const cors = require("cors");
+
 app.use(cors({
-  origin: "https://hospital-saas-hackathon-frontend.onrender.com/",
+  origin: "https://hospital-saas-hackathon-frontend.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
+app.options("*", cors());
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
