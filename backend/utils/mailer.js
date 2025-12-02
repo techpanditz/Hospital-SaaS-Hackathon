@@ -7,7 +7,7 @@ const SANDBOX_EMAIL = "seo.dhru1@gmail.com";
 
 const sendEmail = async ({ to, subject, html }) => {
   const result = await resend.emails.send({
-    from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+    from: `"Hospital CRM" <${process.env.EMAIL_FROM}>` || `"Hospital CRM" <"onboarding@resend.dev">`,
     to: SANDBOX_EMAIL, // ✅ force all emails to your inbox
     subject,
     html: `
