@@ -1,3 +1,38 @@
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// 🔒 Sandbox override email (ALL emails go here)
+const SANDBOX_EMAIL = "seo.dhru1@gmail.com";
+
+const sendEmail = async ({ to, subject, html }) => {
+  const result = await resend.emails.send({
+    from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+    to: SANDBOX_EMAIL, // ✅ force all emails to your inbox
+    subject,
+    html: `
+      <div style="font-family: Arial, sans-serif">
+        <div style="padding:10px;background:#f8fafc;border:1px solid #e5e7eb;margin-bottom:12px">
+          <strong>Sandbox Mode:</strong> Originally intended for:
+          <br />
+          <strong>${to}</strong>
+        </div>
+        ${html}
+      </div>
+    `,
+  });
+
+  console.log("✅ Resend Sandbox Result:", result);
+
+  if (result.error) {
+    console.error("❌ Resend error:", result.error);
+    throw new Error(result.error.message || "Email failed");
+  }
+};
+
+module.exports = { sendEmail };
+
+
 /*const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -24,6 +59,7 @@ const sendEmail = async ({ to, subject, html }) => {
 
 module.exports = { sendEmail };
 */
+/*
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -59,7 +95,7 @@ const sendEmail = async ({ to, subject, html }) => {
 };
 
 module.exports = { sendEmail };
-
+*/
 /*
 const { Resend } = require("resend");
 
