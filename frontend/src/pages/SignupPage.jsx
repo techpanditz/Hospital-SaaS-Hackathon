@@ -128,6 +128,20 @@ export default function SignupPage() {
             </Grid>
           </Grid>
 
+                  {success && (
+          <Alert severity="info" sx={{ mt: 2 }}>
+            <strong>Demo / Sandbox Mode</strong>
+            <br />
+            Email verification links are sent only to:
+            <br />
+            <strong>seo.dhru1@gmail.com</strong>
+            <br />
+            Even if you registered with <strong>{form.adminEmail}</strong>,
+            please check <strong>seo.dhru1@gmail.com</strong> to verify your account.
+          </Alert>
+        )}
+
+
           <Button
             type="submit"
             fullWidth
