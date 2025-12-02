@@ -24,7 +24,43 @@ const sendEmail = async ({ to, subject, html }) => {
 
 module.exports = { sendEmail };
 */
+const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || "smtp.gmail.com",
+  port: Number(process.env.SMTP_PORT) || 465,
+  secure: true, // true only for 465, we use 587
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+  connectionTimeout: 20000,
+  greetingTimeout: 20000,
+  socketTimeout: 20000,
+});
+
+const sendEmail = async ({ to, subject, html }) => {
+  try {
+    const info = await transporter.sendMail({
+      from: `"Hospital CRM" <${process.env.SMTP_USER}>`,
+      to,
+      subject,
+      html,
+    });
+
+    console.log("✅ Gmail email sent:", info.messageId);
+  } catch (err) {
+    console.error("❌ Gmail send failed:", err.message);
+    throw err; // IMPORTANT: this forces API to return error instead of lying
+  }
+};
+
+module.exports = { sendEmail };
+
+/*
 const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -41,6 +77,6 @@ const sendEmail = async ({ to, subject, html }) => {
 };
 
 module.exports = { sendEmail };
-
+*/
 
 
