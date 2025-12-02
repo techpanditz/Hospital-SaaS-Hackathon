@@ -47,6 +47,19 @@ export default function ForgotPassword() {
             required
           />
 
+          {email && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            <strong>Demo / Sandbox Mode</strong>
+            <br />
+            For this demo, all password reset emails are sent only to:
+            <br />
+            <strong>seo.dhru1@gmail.com</strong>
+            <br />
+            Even if you entered <strong>{email}</strong>, please check
+            <strong> seo.dhru1@gmail.com </strong> to complete the reset process.
+          </Alert>
+        )}
+
           <Button
             type="submit"
             fullWidth
