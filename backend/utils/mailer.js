@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+/*const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -23,3 +23,20 @@ const sendEmail = async ({ to, subject, html }) => {
 };
 
 module.exports = { sendEmail };
+*/
+
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const sendEmail = async ({ to, subject, html }) => {
+  await resend.emails.send({
+    from: `"Hospital CRM" <${process.env.EMAIL_FROM}>`,
+    to,
+    subject,
+    html,
+  });
+};
+
+module.exports = { sendEmail };
+
