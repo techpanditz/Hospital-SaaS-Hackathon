@@ -13,7 +13,6 @@ import PeopleIcon from "@mui/icons-material/People";
 import TodayIcon from "@mui/icons-material/Today";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import axios from "../../utils/axios";
 
 export default function DashboardHome() {
   const [summary, setSummary] = useState(null);
@@ -22,7 +21,7 @@ export default function DashboardHome() {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const res = await axios.get("/dashboard/summary");
+        const res = await client.get("/dashboard/summary");
         setSummary(res.data);
       } catch (err) {
         console.error("Dashboard fetch error:", err);
@@ -61,7 +60,11 @@ export default function DashboardHome() {
   }
 
   if (!summary) {
-    return <Typography color="error">Dashboard data unavailable</Typography>;
+    return (
+      <Typography color="error">
+        Dashboard data unavailable
+      </Typography>
+    );
   }
 
   return (
