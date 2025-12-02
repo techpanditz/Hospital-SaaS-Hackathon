@@ -24,7 +24,7 @@ import {
   Chip,
 } from "@mui/material";
 import axios from "../../utils/axios";
-
+import client from "../../api/client";
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
